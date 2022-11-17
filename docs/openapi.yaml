@@ -1,0 +1,247 @@
+openapi: 3.0.0
+info:
+  title: verification-service
+  description: 'The verification service docs'
+  version: 1.0.0
+servers:
+  - url: 'http://verification-service.local'
+    description: Local
+components:
+  schemas:
+    Uuid:
+      type: string
+      format: uuid
+      nullable: false
+      example: 4e2dfcd6-7a67-40ca-b43d-1cc1b8cb0d90
+    Timestamp:
+      type: string
+      format: date-time
+      example: '2021-01-01T00:00:01+00:00'
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: "verification is already processed"
+    ValidationError:
+      type: object
+      required:
+        - message
+        - propertyPath
+      properties:
+        message:
+          type: string
+          example: "this value should not be blank"
+        propetyPath:
+          type: string
+          example: "kind"
+    ErrorResponse:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    ValidationErrorResponse:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    Verification:
+      type: object
+      required:
+        - id
+        - uuid
+        - description
+        - status
+        - createdAt
+      properties:
+        id:
+          type: integer
+          example: 100
+        uuid:
+          $ref: '#/components/schemas/Uuid'
+        decription:
+          type: string
+          example: "Fancy verification description"
+        status:
+          type: string
+          enum: [draft, approved, declined]
+        declineReason:
+          type: string
+          example: "Bad document quality"
+        createdAt:
+          $ref: '#/components/schemas/Timestamp'
+paths:
+  '/verifications':
+    post:
+      tags:
+        - Verification
+      summary: 'Create Verification resource'
+      operationId: create-verification
+      requestBody:
+        required: true
+        description: The new Verification resource
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                kind:
+                  type: string
+                  enum: [identity, document]
+                decription:
+                  type: string
+                  example: "Fancy verification description"
+      responses:
+        200:
+          description: Verification resource created
+          content:
+            application/json:
+              schema:
+                required:
+                  - uuid
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/Uuid'
+        400:
+          description: Validation request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/verifications/{verificationUuid}':
+    get:
+      tags:
+        - Verification
+      summary: 'Get Verification resource'
+      operationId: get-verification
+      parameters:
+        -
+          name: verificationUuid
+          in: path
+          description: 'The verification uuid'
+          required: true
+          schema:
+            $ref: '#/components/schemas/Uuid'
+      responses:
+        200:
+          description: Verification resource created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verification'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/verifications/{verificationUuid}/approve':
+    patch:
+      tags:
+        - Verification
+      summary: 'Approve Verification resource'
+      operationId: approve-verification
+      parameters:
+        -
+          name: verificationUuid
+          in: path
+          description: 'The verification uuid'
+          required: true
+          schema:
+            $ref: '#/components/schemas/Uuid'
+      responses:
+        200:
+          description: Verification resource approved
+          content:
+            application/json:
+              schema:
+                required:
+                  - uuid
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/Uuid'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/verifications/{verificationUuid}/decline':
+    patch:
+      tags:
+        - Verification
+      summary: 'Decline Verification resource'
+      operationId: decline-verification
+      parameters:
+        -
+          name: verificationUuid
+          in: path
+          description: 'The verification uuid'
+          required: true
+          schema:
+            $ref: '#/components/schemas/Uuid'
+      requestBody:
+        required: true
+        description: The approve Verification request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                declineReason:
+                  type: string
+                  example: "Bad document quality"
+      responses:
+        200:
+          description: Verification resource declined
+          content:
+            application/json:
+              schema:
+                required:
+                  - uuid
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/Uuid'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
