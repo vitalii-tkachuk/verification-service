@@ -25,7 +25,7 @@ logs:
 	kubectl logs $(APP) -c application -f
 
 skaffold:
-	skaffold dev --cleanup=true
+	skaffold dev
 
 hosts:
 	sudo sh -c "echo '$(IP) verification-service.local' >> /etc/hosts"
