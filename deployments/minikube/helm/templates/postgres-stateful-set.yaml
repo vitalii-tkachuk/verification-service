@@ -1,8 +1,9 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "verification-service.fullname" . }}-postgres
 spec:
+  serviceName: {{ include "verification-service.fullname" . }}-postgres
   selector:
     matchLabels:
       {{- include "verification-service.selectorLabelsPostgres" . | nindent 6 }}
