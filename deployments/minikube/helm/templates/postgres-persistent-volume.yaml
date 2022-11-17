@@ -1,0 +1,16 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ include "verification-service.fullname" . }}-postgres-persistent-volume
+  labels:
+    type: local
+    {{- include "verification-service.labelsPostgres" . | nindent 4 }}
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/data/postgresql"
+    type: DirectoryOrCreate

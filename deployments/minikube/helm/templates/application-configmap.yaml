@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "verification-service.fullname" . }}-config
+  labels:
+    {{- include "verification-service.labels" . | nindent 4 }}
+data:
+  DATABASE_USER: {{ .Values.postgres.user | quote }}
+  DATABASE_PASSWORD: {{ .Values.postgres.password | quote }}
+  DATABASE_HOST: {{ printf "%s-%s" (include "verification-service.fullname" .) "postgres" | quote }}
+  DATABASE_PORT: {{ .Values.postgres.port | quote }}
+  DATABASE_NAME: {{ .Values.postgres.database | quote }}

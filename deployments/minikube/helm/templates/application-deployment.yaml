@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "verification-service.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "verification-service.selectorLabels" . | nindent 6 }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        {{- include "verification-service.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: application
+          image: {{ .Values.application.skaffoldImageKey }}
+          imagePullPolicy: {{ .Values.application.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.application.port }}
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "verification-service.fullname" . }}-config

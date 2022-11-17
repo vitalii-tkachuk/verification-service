@@ -1,0 +1,33 @@
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: verification-service.local
+      paths:
+        - path: /
+          pathType: Prefix
+          port: 80
+          name: verification-service
+
+application:
+  port: 80
+  imagePullPolicy: IfNotPresent
+  skaffoldImageKey: verification-service:latest
+
+postgres:
+  image: docker.io/library/postgres:15-alpine
+  imagePullPolicy: IfNotPresent
+  database: verification-service
+  user: postgres
+  password: password
+  port: 5432
+
+service:
+  type: "ClusterIP"
+  port: 80
+
+replicaCount: 1
+
+autoscaling:
+  enabled: false

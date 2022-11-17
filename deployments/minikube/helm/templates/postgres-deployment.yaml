@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "verification-service.fullname" . }}-postgres
+spec:
+  selector:
+    matchLabels:
+      {{- include "verification-service.selectorLabelsPostgres" . | nindent 6 }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        {{- include "verification-service.selectorLabelsPostgres" . | nindent 8 }}
+    spec:
+      containers:
+        - name: postgres
+          image: {{ .Values.postgres.image }}
+          imagePullPolicy: {{ .Values.postgres.imagePullPolicy }}
+          env:
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.database }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.user }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgres.password }}
+          args:
+            - postgres
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "apk add --update netcat-openbsd && rm -rf /var/cache/apk/* && while ! nc -z localhost 5432; do sleep 1; done && psql -U postgres -d verification-service -c 'CREATE TABLE IF NOT EXISTS verifications(id SERIAL PRIMARY KEY, uuid UUID, kind VARCHAR(20), description VARCHAR, decline_reason VARCHAR, status VARCHAR(20), created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL);'"]
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: {{ .Values.postgres.port }}
+              hostPort: {{ .Values.postgres.port }}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: "{{ .Chart.Name }}-postgres-data"
+      volumes:
+        - name: "{{ .Chart.Name }}-postgres-data"
+          persistentVolumeClaim:
+            claimName: {{ include "verification-service.fullname" . }}-postgres-persistent-volume-claim

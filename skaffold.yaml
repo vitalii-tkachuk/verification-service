@@ -1,0 +1,25 @@
+apiVersion: skaffold/v3
+kind: Config
+metadata:
+  name: verification-service
+build:
+  artifacts:
+    - image: verification-service
+      context: .
+      sync:
+        infer:
+          - cmd/**/*
+          - internal/**/*
+      docker:
+        dockerfile: build/Dockerfile
+  tagPolicy:
+    sha256: {}
+deploy:
+  helm:
+    releases:
+    - name: verification-service
+      chartPath: deployments/minikube/helm
+      valuesFiles:
+        - deployments/minikube/helm/values.yaml
+      setValues:
+        skaffold: "true"
