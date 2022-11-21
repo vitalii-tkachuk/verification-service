@@ -3,8 +3,9 @@ package model
 import (
 	"errors"
 	"fmt"
-	"github.com/vitalii-tkachuk/verification-service/internal/domain/verification/aggregate"
 	"time"
+
+	"github.com/vitalii-tkachuk/verification-service/internal/domain/verification/aggregate"
 )
 
 const (

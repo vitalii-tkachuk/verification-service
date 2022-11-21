@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+
 	"github.com/vitalii-tkachuk/verification-service/internal/domain/verification/aggregate"
 )
 

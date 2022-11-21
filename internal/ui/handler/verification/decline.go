@@ -2,9 +2,10 @@ package verification
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/vitalii-tkachuk/verification-service/internal/application/verification/command"
 	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure"
-	"net/http"
 )
 
 // declineVerificationResponse represents decline verification endpoint response structure.

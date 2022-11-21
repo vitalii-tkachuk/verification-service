@@ -5,10 +5,11 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"time"
+
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/vitalii-tkachuk/verification-service/internal/domain/verification/aggregate"
 	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure/persistence/postgres/model"
-	"time"
 )
 
 var (

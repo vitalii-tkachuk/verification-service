@@ -2,11 +2,12 @@ package verification
 
 import (
 	"context"
+	"net/http"
+	"time"
+
 	"github.com/vitalii-tkachuk/verification-service/internal/application/verification/query"
 	"github.com/vitalii-tkachuk/verification-service/internal/domain/verification/aggregate"
 	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure"
-	"net/http"
-	"time"
 )
 
 // getVerificationByUuidResponse represents get verification by uuid endpoint response structure.

@@ -3,16 +3,17 @@ package server
 import (
 	"context"
 	"fmt"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
-	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure"
-	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure/config"
-	"github.com/vitalii-tkachuk/verification-service/internal/ui/handler/verification"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure"
+	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure/config"
+	"github.com/vitalii-tkachuk/verification-service/internal/ui/handler/verification"
 )
 
 // Server represents abstraction over http.Server.

@@ -4,10 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure/utils"
 	"log"
 	"time"
+
+	"github.com/google/uuid"
+	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure/utils"
 )
 
 // VerificationId represents the verification identifier.

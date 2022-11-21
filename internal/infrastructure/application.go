@@ -4,14 +4,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-playground/validator/v10"
-	"github.com/vitalii-tkachuk/verification-service/internal/application/shared/bus"
-	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure/utils"
 	"io"
 	"log"
 	"net/http"
 	"reflect"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-playground/validator/v10"
+	"github.com/vitalii-tkachuk/verification-service/internal/application/shared/bus"
+	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure/utils"
 )
 
 const requestMaxBodySizeInBytes = 1048576

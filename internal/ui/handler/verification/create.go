@@ -2,10 +2,11 @@ package verification
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/google/uuid"
 	"github.com/vitalii-tkachuk/verification-service/internal/application/verification/command"
 	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure"
-	"net/http"
 )
 
 // createVerificationRequest represents create verification endpoint structure.

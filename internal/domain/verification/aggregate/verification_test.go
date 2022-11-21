@@ -1,9 +1,10 @@
 package aggregate
 
 import (
+	"testing"
+
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestVerification(t *testing.T) {

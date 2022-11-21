@@ -2,6 +2,8 @@ package command
 
 import (
 	"context"
+	"testing"
+
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -10,7 +12,6 @@ import (
 	"github.com/vitalii-tkachuk/verification-service/internal/domain/verification/service"
 	"github.com/vitalii-tkachuk/verification-service/test/mocks"
 	"github.com/vitalii-tkachuk/verification-service/test/mocks/persistence"
-	"testing"
 )
 
 func TestHandleUnsupportedDeclineVerificationCommandError(t *testing.T) {

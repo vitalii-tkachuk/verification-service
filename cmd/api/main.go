@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/vitalii-tkachuk/verification-service/cmd/api/bootstrap"
 	"log"
+
+	"github.com/vitalii-tkachuk/verification-service/cmd/api/bootstrap"
 )
 
 func main() {

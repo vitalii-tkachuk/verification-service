@@ -2,9 +2,10 @@ package verification
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/vitalii-tkachuk/verification-service/internal/application/verification/command"
 	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure"
-	"net/http"
 )
 
 // approveVerificationResponse represents approve verification endpoint response structure.

@@ -2,13 +2,14 @@ package service
 
 import (
 	"context"
+	"testing"
+
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/vitalii-tkachuk/verification-service/internal/domain/verification/aggregate"
 	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure/persistence/postgres"
 	"github.com/vitalii-tkachuk/verification-service/test/mocks/persistence"
-	"testing"
 )
 
 func TestDeclineVerificationServiceInvalidUuidError(t *testing.T) {

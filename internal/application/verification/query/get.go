@@ -3,6 +3,7 @@ package query
 import (
 	"context"
 	"fmt"
+
 	"github.com/vitalii-tkachuk/verification-service/internal/application/shared/bus"
 	"github.com/vitalii-tkachuk/verification-service/internal/domain/verification/aggregate"
 )

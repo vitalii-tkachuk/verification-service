@@ -3,6 +3,7 @@ package bus
 import (
 	"context"
 	"fmt"
+
 	"github.com/vitalii-tkachuk/verification-service/internal/application/shared/bus"
 )
 
