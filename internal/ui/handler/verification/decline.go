@@ -15,7 +15,7 @@ type declineVerificationRequest struct {
 
 // declineVerificationResponse represents decline verification endpoint response structure.
 type declineVerificationResponse struct {
-	Uuid string `json:"uuid"`
+	UUID string `json:"uuid"`
 }
 
 // DeclineVerificationHandler returns an HTTP handler for verification decline.
@@ -35,8 +35,8 @@ func DeclineVerificationHandler(application *infrastructure.Application) func(ht
 			return
 		}
 
-		verificationUuid := application.GetUrlParam(r, "verificationUuid")
-		declineCommand := command.NewDeclineVerificationCommand(verificationUuid, request.DeclineReason)
+		verificationUUID := application.GetURLParam(r, "verificationUuid")
+		declineCommand := command.NewDeclineVerificationCommand(verificationUUID, request.DeclineReason)
 
 		if err := application.CommandBus.Dispatch(context.Background(), declineCommand); err != nil {
 			application.HttpErrorResponse(w, err)
@@ -44,7 +44,7 @@ func DeclineVerificationHandler(application *infrastructure.Application) func(ht
 			return
 		}
 
-		response := declineVerificationResponse{Uuid: verificationUuid}
+		response := declineVerificationResponse{UUID: verificationUUID}
 
 		if err := application.Marshall(w, http.StatusOK, response, nil); err != nil {
 			application.HttpErrorResponse(w, err)

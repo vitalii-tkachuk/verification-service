@@ -8,48 +8,48 @@ import (
 	"github.com/vitalii-tkachuk/verification-service/internal/domain/verification/aggregate"
 )
 
-const GetVerificationByUuidQueryType bus.QueryType = "get_by_uuid.verification.query"
+const GetVerificationByUUIDQueryType bus.QueryType = "get_by_uuid.verification.query"
 
-// GetVerificationByUuidQuery is the query dispatched to get verification by uuid.
-type GetVerificationByUuidQuery struct {
+// GetVerificationByUUIDQuery is the query dispatched to get verification by uuid.
+type GetVerificationByUUIDQuery struct {
 	uuid string
 }
 
-// NewGetVerificationByUuidQuery creates a new GetVerificationByUuidQuery.
-func NewGetVerificationByUuidQuery(uuid string) GetVerificationByUuidQuery {
-	return GetVerificationByUuidQuery{
-		uuid: uuid,
+// NewGetVerificationByUUIDQuery creates a new GetVerificationByUUIDQuery.
+func NewGetVerificationByUUIDQuery(UUID string) GetVerificationByUUIDQuery {
+	return GetVerificationByUUIDQuery{
+		uuid: UUID,
 	}
 }
 
 // Type implements bus.Query interface.
-func (q GetVerificationByUuidQuery) Type() bus.QueryType {
-	return GetVerificationByUuidQueryType
+func (q GetVerificationByUUIDQuery) Type() bus.QueryType {
+	return GetVerificationByUUIDQueryType
 }
 
-// GetVerificationByUuidQueryHandler is the GetVerificationByUuidQuery handler.
-type GetVerificationByUuidQueryHandler struct {
+// GetVerificationByUUIDQueryHandler is the GetVerificationByUUIDQuery handler.
+type GetVerificationByUUIDQueryHandler struct {
 	verificationRepository aggregate.VerificationRepository
 }
 
-// NewGetVerificationByUuidQueryHandler initializes a new GetVerificationByUuidQueryHandler.
-func NewGetVerificationByUuidQueryHandler(verificationRepository aggregate.VerificationRepository) GetVerificationByUuidQueryHandler {
-	return GetVerificationByUuidQueryHandler{
+// NewGetVerificationByUUIDQueryHandler initializes a new GetVerificationByUUIDQueryHandler.
+func NewGetVerificationByUUIDQueryHandler(verificationRepository aggregate.VerificationRepository) GetVerificationByUUIDQueryHandler {
+	return GetVerificationByUUIDQueryHandler{
 		verificationRepository: verificationRepository,
 	}
 }
 
 // Handle implements the bus.QueryHandler interface.
-func (h GetVerificationByUuidQueryHandler) Handle(ctx context.Context, q bus.Query) (interface{}, error) {
-	getVerificationCommand, ok := q.(GetVerificationByUuidQuery)
+func (h GetVerificationByUUIDQueryHandler) Handle(ctx context.Context, q bus.Query) (interface{}, error) {
+	getVerificationCommand, ok := q.(GetVerificationByUUIDQuery)
 	if !ok {
 		return nil, fmt.Errorf("query type %s: %w", q.Type(), bus.ErrUnexpectedQuery)
 	}
 
-	verificationUuid, err := aggregate.NewVerificationUuid(getVerificationCommand.uuid)
+	verificationUUID, err := aggregate.NewVerificationUUID(getVerificationCommand.uuid)
 	if err != nil {
 		return nil, err
 	}
 
-	return h.verificationRepository.GetByUuid(ctx, verificationUuid)
+	return h.verificationRepository.GetByUUID(ctx, verificationUUID)
 }

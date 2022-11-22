@@ -40,10 +40,10 @@ func TestHandleApproveVerificationCommandSuccess(t *testing.T) {
 		"Fancy verification document description",
 	)
 
-	approveVerificationCommand := NewApproveVerificationCommand(verification.Uuid().Value())
+	approveVerificationCommand := NewApproveVerificationCommand(verification.UUID().Value())
 
 	verificationRepositoryMock := new(persistence.VerificationRepository)
-	verificationRepositoryMock.On("GetByUuid", mock.Anything, mock.Anything).Return(verification, nil)
+	verificationRepositoryMock.On("GetByUUID", mock.Anything, mock.Anything).Return(verification, nil)
 	verificationRepositoryMock.On("Update", mock.Anything, mock.Anything).Return(nil)
 
 	// act

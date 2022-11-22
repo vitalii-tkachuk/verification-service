@@ -13,7 +13,7 @@ import (
 	"github.com/vitalii-tkachuk/verification-service/test/mocks/persistence"
 )
 
-func TestHandleUnsupportedGetByUuidQueryError(t *testing.T) {
+func TestHandleUnsupportedGetByUUIDQueryError(t *testing.T) {
 	// assign
 	var unsupportedQueryType bus.QueryType = "unsupported_get_by_uuid.verification.query"
 
@@ -23,8 +23,8 @@ func TestHandleUnsupportedGetByUuidQueryError(t *testing.T) {
 	verificationRepositoryMock := new(persistence.VerificationRepository)
 
 	// act
-	getVerificationByUuidQueryHandler := NewGetVerificationByUuidQueryHandler(verificationRepositoryMock)
-	verification, err := getVerificationByUuidQueryHandler.Handle(context.Background(), unsupportedQuery)
+	getVerificationByUUIDQueryHandler := NewGetVerificationByUUIDQueryHandler(verificationRepositoryMock)
+	verification, err := getVerificationByUUIDQueryHandler.Handle(context.Background(), unsupportedQuery)
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)
@@ -32,7 +32,7 @@ func TestHandleUnsupportedGetByUuidQueryError(t *testing.T) {
 	assert.ErrorIs(t, err, bus.ErrUnexpectedQuery)
 }
 
-func TestGetVerificationByUuidQuerySuccess(t *testing.T) {
+func TestGetVerificationByUUIDQuerySuccess(t *testing.T) {
 	// assign
 	expectedVerification, _ := aggregate.NewVerification(
 		uuid.New().String(),
@@ -40,17 +40,17 @@ func TestGetVerificationByUuidQuerySuccess(t *testing.T) {
 		"Fancy verification document description",
 	)
 
-	getVerificationByUuidQuery := NewGetVerificationByUuidQuery(expectedVerification.Uuid().Value())
+	getVerificationByUUIDQuery := NewGetVerificationByUUIDQuery(expectedVerification.UUID().Value())
 
 	verificationRepositoryMock := new(persistence.VerificationRepository)
-	verificationRepositoryMock.On("GetByUuid", mock.Anything, mock.Anything).Return(expectedVerification, nil)
+	verificationRepositoryMock.On("GetByUUID", mock.Anything, mock.Anything).Return(expectedVerification, nil)
 
 	// act
-	getVerificationByUuidQueryHandler := NewGetVerificationByUuidQueryHandler(verificationRepositoryMock)
-	verification, err := getVerificationByUuidQueryHandler.Handle(context.Background(), getVerificationByUuidQuery)
+	getVerificationByUUIDQueryHandler := NewGetVerificationByUUIDQueryHandler(verificationRepositoryMock)
+	verification, err := getVerificationByUUIDQueryHandler.Handle(context.Background(), getVerificationByUUIDQuery)
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)
 	assert.NoError(t, err)
-	assert.Equal(t, expectedVerification.Uuid(), verification.(*aggregate.Verification).Uuid())
+	assert.Equal(t, expectedVerification.UUID(), verification.(*aggregate.Verification).UUID())
 }

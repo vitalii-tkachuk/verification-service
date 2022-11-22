@@ -50,13 +50,13 @@ func Run() error {
 	approveVerificationCommandHandler := command.NewApproveVerificationCommandHandler(approveVerificationService)
 	declineVerificationCommandHandler := command.NewDeclineVerificationCommandHandler(declineVerificationService)
 
-	getVerificationByUuidQueryHandler := query.NewGetVerificationByUuidQueryHandler(verificationRepository)
+	getVerificationByUUIDQueryHandler := query.NewGetVerificationByUUIDQueryHandler(verificationRepository)
 
 	inMemoryCommandBus.Register(command.CreateVerificationCommandType, createVerificationCommandHandler)
 	inMemoryCommandBus.Register(command.ApproveVerificationCommandType, approveVerificationCommandHandler)
 	inMemoryCommandBus.Register(command.DeclineVerificationCommandType, declineVerificationCommandHandler)
 
-	queryBus.Register(query.GetVerificationByUuidQueryType, getVerificationByUuidQueryHandler)
+	queryBus.Register(query.GetVerificationByUUIDQueryType, getVerificationByUUIDQueryHandler)
 
 	application := infrastructure.NewApplication(inMemoryCommandBus, queryBus, validator.New())
 

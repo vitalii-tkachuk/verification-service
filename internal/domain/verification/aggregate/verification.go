@@ -11,39 +11,39 @@ import (
 	"github.com/vitalii-tkachuk/verification-service/internal/infrastructure/utils"
 )
 
-// VerificationId represents the verification identifier.
-type VerificationId struct {
+// VerificationID represents the verification identifier.
+type VerificationID struct {
 	value uint32
 }
 
-// NewVerificationId instantiate the VO for VerificationId.
-func NewVerificationId(value uint32) VerificationId {
-	return VerificationId{value: value}
+// NewVerificationID instantiate the VO for VerificationID.
+func NewVerificationID(value uint32) VerificationID {
+	return VerificationID{value: value}
 }
 
-// Value return the VerificationId value.
-func (id VerificationId) Value() uint32 {
+// Value return the VerificationID value.
+func (id VerificationID) Value() uint32 {
 	return id.value
 }
 
-var ErrInvalidVerificationUuid = errors.New("invalid verification uuid")
+var ErrInvalidVerificationUUID = errors.New("invalid verification uuid")
 
-// VerificationUuid represents the verification unique identifier.
-type VerificationUuid struct {
+// VerificationUUID represents the verification unique identifier.
+type VerificationUUID struct {
 	value string
 }
 
-// NewVerificationUuid instantiate the VO for VerificationUuid.
-func NewVerificationUuid(value string) (VerificationUuid, error) {
+// NewVerificationUUID instantiate the VO for VerificationUUID.
+func NewVerificationUUID(value string) (VerificationUUID, error) {
 	if _, err := uuid.Parse(value); err != nil {
-		return VerificationUuid{}, fmt.Errorf("%w: %s", ErrInvalidVerificationUuid, value)
+		return VerificationUUID{}, fmt.Errorf("%w: %s", ErrInvalidVerificationUUID, value)
 	}
 
-	return VerificationUuid{value: value}, nil
+	return VerificationUUID{value: value}, nil
 }
 
-// Value return the VerificationUuid value.
-func (uuid VerificationUuid) Value() string {
+// Value return the VerificationUUID value.
+func (uuid VerificationUUID) Value() string {
 	return uuid.value
 }
 
@@ -59,7 +59,7 @@ type VerificationKind struct {
 	value string
 }
 
-// NewVerificationKind instantiate the VO for VerificationKind
+// NewVerificationKind instantiate the VO for VerificationKind.
 func NewVerificationKind(value string) (VerificationKind, error) {
 	if value != Identity && value != Document {
 		return VerificationKind{}, ErrInvalidVerificationKind
@@ -80,7 +80,7 @@ type VerificationDescription struct {
 	value string
 }
 
-// NewVerificationDescription instantiate the VO for VerificationUuid
+// NewVerificationDescription instantiate the VO for NewVerificationDescription.
 func NewVerificationDescription(value string) (VerificationDescription, error) {
 	if value == "" {
 		return VerificationDescription{}, ErrEmptyDescription
@@ -107,7 +107,7 @@ type VerificationStatus struct {
 	value string
 }
 
-// NewVerificationStatus instantiate the VO for VerificationStatus
+// NewVerificationStatus instantiate the VO for VerificationStatus.
 func NewVerificationStatus(value string) (VerificationStatus, error) {
 	if !utils.Contains(value, []string{Draft, Approved, Declined}) {
 		return VerificationStatus{}, ErrInvalidVerificationStatus
@@ -144,8 +144,8 @@ func (r VerificationDeclineReason) Value() string {
 
 // Verification is the data structure that represents a verification.
 type Verification struct {
-	id            VerificationId
-	uuid          VerificationUuid
+	id            VerificationID
+	uuid          VerificationUUID
 	kind          VerificationKind
 	description   VerificationDescription
 	status        VerificationStatus
@@ -159,14 +159,14 @@ var ErrAlreadyProcessed = errors.New("verification is already processed")
 type VerificationRepository interface {
 	Add(ctx context.Context, verification *Verification) error
 	Update(ctx context.Context, verification *Verification) error
-	GetByUuid(ctx context.Context, uuid VerificationUuid) (*Verification, error)
+	GetByUUID(ctx context.Context, uuid VerificationUUID) (*Verification, error)
 }
 
 //go:generate mockery --case=snake --outpkg=persistence --output=test/mocks/persistence --name=VerificationRepository
 
 // NewVerification creates a new verification.
 func NewVerification(uuid, kind, description string) (*Verification, error) {
-	verificationUuid, err := NewVerificationUuid(uuid)
+	verificationUUID, err := NewVerificationUUID(uuid)
 	if err != nil {
 		return nil, err
 	}
@@ -187,7 +187,7 @@ func NewVerification(uuid, kind, description string) (*Verification, error) {
 	}
 
 	verification := &Verification{
-		uuid:        verificationUuid,
+		uuid:        verificationUUID,
 		kind:        verificationKind,
 		description: verificationDescription,
 		status:      verificationStatus,
@@ -197,9 +197,9 @@ func NewVerification(uuid, kind, description string) (*Verification, error) {
 	return verification, nil
 }
 
-// WithId add id to verification. Used for restoring object from DB.
-func (v *Verification) WithId(id uint32) {
-	v.id = NewVerificationId(id)
+// WithID add ID to verification. Used for restoring object from DB.
+func (v *Verification) WithID(id uint32) {
+	v.id = NewVerificationID(id)
 }
 
 // WithDeclineReason add decline reason to verification. Used for restoring object from DB.
@@ -226,13 +226,13 @@ func (v *Verification) WithStatus(status string) error {
 	return nil
 }
 
-// Id returns the Verification identifier.
-func (v Verification) Id() VerificationId {
+// ID returns the Verification identifier.
+func (v Verification) ID() VerificationID {
 	return v.id
 }
 
-// Uuid returns the Verification unique identifier.
-func (v Verification) Uuid() VerificationUuid {
+// UUID returns the Verification unique identifier.
+func (v Verification) UUID() VerificationUUID {
 	return v.uuid
 }
 

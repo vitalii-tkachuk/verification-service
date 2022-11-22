@@ -20,12 +20,12 @@ func NewDeclineVerificationService(verificationRepository aggregate.Verification
 
 // Decline implements the DeclineVerificationService interface
 func (s DeclineVerificationService) Decline(ctx context.Context, uuid, declineReason string) error {
-	verificationUuid, err := aggregate.NewVerificationUuid(uuid)
+	verificationUUID, err := aggregate.NewVerificationUUID(uuid)
 	if err != nil {
 		return err
 	}
 
-	verification, err := s.verificationRepository.GetByUuid(ctx, verificationUuid)
+	verification, err := s.verificationRepository.GetByUUID(ctx, verificationUUID)
 	if err != nil {
 		return err
 	}

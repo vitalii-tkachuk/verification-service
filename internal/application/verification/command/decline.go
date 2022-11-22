@@ -16,9 +16,9 @@ type DeclineVerificationCommand struct {
 }
 
 // NewDeclineVerificationCommand creates a new DeclineVerificationCommand.
-func NewDeclineVerificationCommand(uuid, declineReason string) DeclineVerificationCommand {
+func NewDeclineVerificationCommand(UUID, declineReason string) DeclineVerificationCommand {
 	return DeclineVerificationCommand{
-		uuid:          uuid,
+		uuid:          UUID,
 		declineReason: declineReason,
 	}
 }

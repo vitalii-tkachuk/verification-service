@@ -12,32 +12,32 @@ import (
 	"github.com/vitalii-tkachuk/verification-service/test/mocks/persistence"
 )
 
-func TestDeclineVerificationServiceInvalidUuidError(t *testing.T) {
+func TestDeclineVerificationServiceInvalidUUIDError(t *testing.T) {
 	// assign
-	verificationUuid := "invalidUuid"
+	verificationUUID := "invalidUUID"
 	declineReason := "Bad document quantity"
 
 	// act
 	verificationRepositoryMock := new(persistence.VerificationRepository)
 	declineVerificationService := NewDeclineVerificationService(verificationRepositoryMock)
-	err := declineVerificationService.Decline(context.Background(), verificationUuid, declineReason)
+	err := declineVerificationService.Decline(context.Background(), verificationUUID, declineReason)
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)
-	assert.ErrorIs(t, err, aggregate.ErrInvalidVerificationUuid)
+	assert.ErrorIs(t, err, aggregate.ErrInvalidVerificationUUID)
 }
 
 func TestDeclineVerificationServiceNotFoundError(t *testing.T) {
 	// assign
-	verificationUuid := uuid.New()
+	verificationUUID := uuid.New()
 	declineReason := "Bad document quantity"
 
 	verificationRepositoryMock := new(persistence.VerificationRepository)
-	verificationRepositoryMock.On("GetByUuid", mock.Anything, mock.Anything).Return(nil, postgres.ErrVerificationNotFound)
+	verificationRepositoryMock.On("GetByUUID", mock.Anything, mock.Anything).Return(nil, postgres.ErrVerificationNotFound)
 
 	// act
 	declineVerificationService := NewDeclineVerificationService(verificationRepositoryMock)
-	err := declineVerificationService.Decline(context.Background(), verificationUuid.String(), declineReason)
+	err := declineVerificationService.Decline(context.Background(), verificationUUID.String(), declineReason)
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)
@@ -55,11 +55,11 @@ func TestDeclineVerificationServiceAlreadyProcessedError(t *testing.T) {
 	_ = processedVerification.Approve()
 
 	verificationRepositoryMock := new(persistence.VerificationRepository)
-	verificationRepositoryMock.On("GetByUuid", mock.Anything, mock.Anything).Return(processedVerification, nil)
+	verificationRepositoryMock.On("GetByUUID", mock.Anything, mock.Anything).Return(processedVerification, nil)
 
 	// act
 	declineVerificationService := NewDeclineVerificationService(verificationRepositoryMock)
-	err := declineVerificationService.Decline(context.Background(), processedVerification.Uuid().Value(), declineReason)
+	err := declineVerificationService.Decline(context.Background(), processedVerification.UUID().Value(), declineReason)
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)
@@ -76,12 +76,12 @@ func TestDeclineVerificationServiceSuccess(t *testing.T) {
 	)
 
 	verificationRepositoryMock := new(persistence.VerificationRepository)
-	verificationRepositoryMock.On("GetByUuid", mock.Anything, mock.Anything).Return(verification, nil)
+	verificationRepositoryMock.On("GetByUUID", mock.Anything, mock.Anything).Return(verification, nil)
 	verificationRepositoryMock.On("Update", mock.Anything, mock.Anything).Return(nil)
 
 	// act
 	declineVerificationService := NewDeclineVerificationService(verificationRepositoryMock)
-	err := declineVerificationService.Decline(context.Background(), verification.Uuid().Value(), declineReason)
+	err := declineVerificationService.Decline(context.Background(), verification.UUID().Value(), declineReason)
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)

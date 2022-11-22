@@ -43,10 +43,10 @@ func TestHandleDeclineVerificationCommandSuccess(t *testing.T) {
 	)
 	declineReason := "Bad document quality"
 
-	declineVerificationCommand := NewDeclineVerificationCommand(verification.Uuid().Value(), declineReason)
+	declineVerificationCommand := NewDeclineVerificationCommand(verification.UUID().Value(), declineReason)
 
 	verificationRepositoryMock := new(persistence.VerificationRepository)
-	verificationRepositoryMock.On("GetByUuid", mock.Anything, mock.Anything).Return(verification, nil)
+	verificationRepositoryMock.On("GetByUUID", mock.Anything, mock.Anything).Return(verification, nil)
 	verificationRepositoryMock.On("Update", mock.Anything, mock.Anything).Return(nil)
 
 	// act

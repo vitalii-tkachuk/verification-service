@@ -36,11 +36,11 @@ func TestHandleUnsupportedCreateVerificationCommandError(t *testing.T) {
 
 func TestHandleCreateVerificationCommandSuccess(t *testing.T) {
 	// assign
-	verificationUuid := uuid.New()
+	verificationUUID := uuid.New()
 	kind := aggregate.Identity
 	description := "Fancy verification document description"
 
-	createVerificationCommand := NewCreateVerificationCommand(verificationUuid, description, kind)
+	createVerificationCommand := NewCreateVerificationCommand(verificationUUID, description, kind)
 
 	verificationRepositoryMock := new(persistence.VerificationRepository)
 	verificationRepositoryMock.On("Add", mock.Anything, mock.Anything).Return(nil)

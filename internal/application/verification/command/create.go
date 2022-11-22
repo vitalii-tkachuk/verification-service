@@ -19,9 +19,9 @@ type CreateVerificationCommand struct {
 }
 
 // NewCreateVerificationCommand creates a new CreateVerificationCommand
-func NewCreateVerificationCommand(uuid uuid.UUID, description, kind string) CreateVerificationCommand {
+func NewCreateVerificationCommand(UUID uuid.UUID, description, kind string) CreateVerificationCommand {
 	return CreateVerificationCommand{
-		uuid:        uuid,
+		uuid:        UUID,
 		description: description,
 		kind:        kind,
 	}

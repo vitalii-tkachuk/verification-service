@@ -17,7 +17,7 @@ type createVerificationRequest struct {
 
 // createVerificationResponse represents create verification endpoint response structure.
 type createVerificationResponse struct {
-	Uuid uuid.UUID `json:"uuid"`
+	UUID uuid.UUID `json:"uuid"`
 }
 
 // CreateVerificationHandler returns an HTTP handler for verification creation.
@@ -37,8 +37,8 @@ func CreateVerificationHandler(application *infrastructure.Application) func(htt
 			return
 		}
 
-		verificationUuid := uuid.New()
-		createCommand := command.NewCreateVerificationCommand(verificationUuid, request.Description, request.Kind)
+		verificationUUID := uuid.New()
+		createCommand := command.NewCreateVerificationCommand(verificationUUID, request.Description, request.Kind)
 
 		if err := application.CommandBus.Dispatch(context.Background(), createCommand); err != nil {
 			application.HttpErrorResponse(w, err)
@@ -46,7 +46,7 @@ func CreateVerificationHandler(application *infrastructure.Application) func(htt
 			return
 		}
 
-		response := createVerificationResponse{Uuid: verificationUuid}
+		response := createVerificationResponse{UUID: verificationUUID}
 
 		if err := application.Marshall(w, http.StatusCreated, response, nil); err != nil {
 			application.HttpErrorResponse(w, err)

@@ -20,12 +20,12 @@ func NewApproveVerificationService(verificationRepository aggregate.Verification
 
 // Approve implements the ApproveVerificationService interface
 func (s ApproveVerificationService) Approve(ctx context.Context, uuid string) error {
-	verificationUuid, err := aggregate.NewVerificationUuid(uuid)
+	verificationUUID, err := aggregate.NewVerificationUUID(uuid)
 	if err != nil {
 		return err
 	}
 
-	verification, err := s.verificationRepository.GetByUuid(ctx, verificationUuid)
+	verification, err := s.verificationRepository.GetByUUID(ctx, verificationUUID)
 	if err != nil {
 		return err
 	}

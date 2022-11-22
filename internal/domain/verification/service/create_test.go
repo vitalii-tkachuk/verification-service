@@ -14,14 +14,14 @@ import (
 
 func TestCreateVerificationServiceDomainError(t *testing.T) {
 	// assign
-	verificationUuid := uuid.New()
+	verificationUUID := uuid.New()
 	description := ""
 	kind := aggregate.Identity
 
 	// act
 	verificationRepositoryMock := new(persistence.VerificationRepository)
 	createVerificationService := NewCreateVerificationService(verificationRepositoryMock)
-	err := createVerificationService.Create(context.Background(), verificationUuid, description, kind)
+	err := createVerificationService.Create(context.Background(), verificationUUID, description, kind)
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)
@@ -30,7 +30,7 @@ func TestCreateVerificationServiceDomainError(t *testing.T) {
 
 func TestCreateVerificationServicePersistenceError(t *testing.T) {
 	// assign
-	verificationUuid := uuid.New()
+	verificationUUID := uuid.New()
 	description := "Fancy verification document description"
 	kind := aggregate.Document
 
@@ -39,7 +39,7 @@ func TestCreateVerificationServicePersistenceError(t *testing.T) {
 
 	// act
 	createVerificationService := NewCreateVerificationService(verificationRepositoryMock)
-	err := createVerificationService.Create(context.Background(), verificationUuid, description, kind)
+	err := createVerificationService.Create(context.Background(), verificationUUID, description, kind)
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)
@@ -48,7 +48,7 @@ func TestCreateVerificationServicePersistenceError(t *testing.T) {
 
 func TestCreateVerificationServiceSuccess(t *testing.T) {
 	// assign
-	verificationUuid := uuid.New()
+	verificationUUID := uuid.New()
 	description := "Fancy verification document description"
 	kind := aggregate.Identity
 
@@ -57,7 +57,7 @@ func TestCreateVerificationServiceSuccess(t *testing.T) {
 
 	// act
 	createVerificationService := NewCreateVerificationService(verificationRepositoryMock)
-	err := createVerificationService.Create(context.Background(), verificationUuid, description, kind)
+	err := createVerificationService.Create(context.Background(), verificationUUID, description, kind)
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)

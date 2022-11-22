@@ -29,12 +29,12 @@ func (_m *VerificationRepository) Add(ctx context.Context, verification *aggrega
 	return r0
 }
 
-// GetByUuid provides a mocks function with given fields: ctx, uuid
-func (_m *VerificationRepository) GetByUuid(ctx context.Context, uuid aggregate.VerificationUuid) (*aggregate.Verification, error) {
+// GetByUUID provides a mocks function with given fields: ctx, uuid
+func (_m *VerificationRepository) GetByUUID(ctx context.Context, uuid aggregate.VerificationUUID) (*aggregate.Verification, error) {
 	ret := _m.Called(ctx, uuid)
 
 	var r0 *aggregate.Verification
-	if rf, ok := ret.Get(0).(func(context.Context, aggregate.VerificationUuid) *aggregate.Verification); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, aggregate.VerificationUUID) *aggregate.Verification); ok {
 		r0 = rf(ctx, uuid)
 	} else {
 		if ret.Get(0) != nil {
@@ -43,7 +43,7 @@ func (_m *VerificationRepository) GetByUuid(ctx context.Context, uuid aggregate.
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, aggregate.VerificationUuid) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, aggregate.VerificationUUID) error); ok {
 		r1 = rf(ctx, uuid)
 	} else {
 		r1 = ret.Error(1)

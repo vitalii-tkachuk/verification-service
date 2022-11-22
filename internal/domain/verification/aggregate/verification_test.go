@@ -10,9 +10,9 @@ import (
 func TestVerification(t *testing.T) {
 	t.Parallel()
 
-	t.Run("test create verification id success", testCreateVerificationIdSuccess)
-	t.Run("test create verification uuid success", testCreateVerificationUuidSuccess)
-	t.Run("test create invalid verification uuid error", testCreateInvalidVerificationUuidError)
+	t.Run("test create verification id success", testCreateVerificationIDSuccess)
+	t.Run("test create verification uuid success", testCreateVerificationUUIDSuccess)
+	t.Run("test create invalid verification uuid error", testCreateInvalidVerificationUUIDError)
 	t.Run("test create verification kind success", testCreateVerificationKindSuccess)
 	t.Run("test create verification kind error", testCreateInvalidVerificationKindError)
 	t.Run("test create verification description success", testCreateVerificationDescriptionSuccess)
@@ -29,39 +29,39 @@ func TestVerification(t *testing.T) {
 	t.Run("test approve already processed verification error", testApproveAlreadyProcessedVerificationError)
 }
 
-func testCreateVerificationIdSuccess(t *testing.T) {
+func testCreateVerificationIDSuccess(t *testing.T) {
 	// assign
 	var value uint32 = 100
 
 	// act
-	verificationId := NewVerificationId(value)
+	verificationID := NewVerificationID(value)
 
 	// assert
-	require.Equal(t, value, verificationId.Value())
+	require.Equal(t, value, verificationID.Value())
 }
 
-func testCreateVerificationUuidSuccess(t *testing.T) {
+func testCreateVerificationUUIDSuccess(t *testing.T) {
 	// assign
-	expectedUuid := uuid.New()
+	expectedUUID := uuid.New()
 
 	// act
-	verificationUuid, err := NewVerificationUuid(expectedUuid.String())
+	verificationUUID, err := NewVerificationUUID(expectedUUID.String())
 
 	// assert
 	require.NoError(t, err)
-	require.Equal(t, expectedUuid.String(), verificationUuid.Value())
+	require.Equal(t, expectedUUID.String(), verificationUUID.Value())
 }
 
-func testCreateInvalidVerificationUuidError(t *testing.T) {
+func testCreateInvalidVerificationUUIDError(t *testing.T) {
 	// assign
-	invalidUuid := "invalidUuid"
+	invalidUUID := "invalidUUID"
 
 	// act
-	verificationUuid, err := NewVerificationUuid(invalidUuid)
+	verificationUUID, err := NewVerificationUUID(invalidUUID)
 
 	// assert
-	require.ErrorIs(t, err, ErrInvalidVerificationUuid)
-	require.Equal(t, VerificationUuid{}, verificationUuid)
+	require.ErrorIs(t, err, ErrInvalidVerificationUUID)
+	require.Equal(t, VerificationUUID{}, verificationUUID)
 }
 
 func testCreateVerificationKindSuccess(t *testing.T) {
@@ -162,29 +162,29 @@ func testCreateEmptyVerificationDeclineReasonError(t *testing.T) {
 
 func testCreateVerificationSuccess(t *testing.T) {
 	// assign
-	expectedUuid := uuid.New()
+	expectedUUID := uuid.New()
 	kind := Identity
 	description := "Fancy verification document description"
 
 	// act
-	verification, err := NewVerification(expectedUuid.String(), kind, description)
+	verification, err := NewVerification(expectedUUID.String(), kind, description)
 
 	// assert
 	require.NoError(t, err)
-	require.Equal(t, expectedUuid.String(), verification.Uuid().Value())
+	require.Equal(t, expectedUUID.String(), verification.UUID().Value())
 	require.Equal(t, kind, verification.Kind().Value())
 	require.Equal(t, description, verification.Description().Value())
 }
 
 func testDeclineVerificationSuccess(t *testing.T) {
 	// assign
-	expectedUuid := uuid.New()
+	expectedUUID := uuid.New()
 	kind := Identity
 	description := "Fancy verification document description"
 	declineReason := "Bad photo quality"
 
 	// act
-	verification, _ := NewVerification(expectedUuid.String(), kind, description)
+	verification, _ := NewVerification(expectedUUID.String(), kind, description)
 	err := verification.Decline(declineReason)
 
 	// assert
@@ -195,13 +195,13 @@ func testDeclineVerificationSuccess(t *testing.T) {
 
 func testDeclineAlreadyProcessedVerificationError(t *testing.T) {
 	// assign
-	expectedUuid := uuid.New()
+	expectedUUID := uuid.New()
 	kind := Identity
 	description := "Fancy verification document description"
 	declineReason := "Bad photo quality"
 
 	// act
-	verification, _ := NewVerification(expectedUuid.String(), kind, description)
+	verification, _ := NewVerification(expectedUUID.String(), kind, description)
 	_ = verification.Approve()
 	err := verification.Decline(declineReason)
 
@@ -212,13 +212,13 @@ func testDeclineAlreadyProcessedVerificationError(t *testing.T) {
 
 func testDeclineVerificationWithEmptyReasonError(t *testing.T) {
 	// assign
-	expectedUuid := uuid.New()
+	expectedUUID := uuid.New()
 	kind := Identity
 	description := "Fancy verification document description"
 	declineReason := ""
 
 	// act
-	verification, _ := NewVerification(expectedUuid.String(), kind, description)
+	verification, _ := NewVerification(expectedUUID.String(), kind, description)
 	err := verification.Decline(declineReason)
 
 	// assert
@@ -228,12 +228,12 @@ func testDeclineVerificationWithEmptyReasonError(t *testing.T) {
 
 func testApproveVerificationSuccess(t *testing.T) {
 	// assign
-	expectedUuid := uuid.New()
+	expectedUUID := uuid.New()
 	kind := Identity
 	description := "Fancy verification document description"
 
 	// act
-	verification, _ := NewVerification(expectedUuid.String(), kind, description)
+	verification, _ := NewVerification(expectedUUID.String(), kind, description)
 	err := verification.Approve()
 
 	// assert
@@ -243,13 +243,13 @@ func testApproveVerificationSuccess(t *testing.T) {
 
 func testApproveAlreadyProcessedVerificationError(t *testing.T) {
 	// assign
-	expectedUuid := uuid.New()
+	expectedUUID := uuid.New()
 	kind := Identity
 	description := "Fancy verification document description"
 	declineReason := "Bad photo quality"
 
 	// act
-	verification, _ := NewVerification(expectedUuid.String(), kind, description)
+	verification, _ := NewVerification(expectedUUID.String(), kind, description)
 	_ = verification.Decline(declineReason)
 	err := verification.Approve()
 

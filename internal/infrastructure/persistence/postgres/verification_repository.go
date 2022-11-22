@@ -33,11 +33,11 @@ func NewVerificationRepository(db *sql.DB, dbTimeout time.Duration) *Verificatio
 
 // Add implements the aggregate.VerificationRepository.Add() method.
 func (r *VerificationRepository) Add(ctx context.Context, verification *aggregate.Verification) error {
-	verificationSQLStruct := sqlbuilder.NewStruct(new(model.SqlVerification))
+	verificationSQLStruct := sqlbuilder.NewStruct(new(model.SQLVerification))
 
 	selectBuilder := verificationSQLStruct.InsertIntoForTag(
-		model.SqlVerificationTable,
-		model.SqlVerificationCreateTag,
+		model.SQLVerificationTable,
+		model.SQLVerificationCreateTag,
 		model.ToSQLVerification(verification),
 	)
 	query, args := selectBuilder.BuildWithFlavor(sqlbuilder.PostgreSQL)
@@ -54,14 +54,14 @@ func (r *VerificationRepository) Add(ctx context.Context, verification *aggregat
 
 // Update implements the aggregate.VerificationRepository.Update() method.
 func (r *VerificationRepository) Update(ctx context.Context, verification *aggregate.Verification) error {
-	verificationSQLStruct := sqlbuilder.NewStruct(new(model.SqlVerification))
+	verificationSQLStruct := sqlbuilder.NewStruct(new(model.SQLVerification))
 
 	updateBuilder := verificationSQLStruct.UpdateForTag(
-		model.SqlVerificationTable,
-		model.SqlVerificationCreateTag,
+		model.SQLVerificationTable,
+		model.SQLVerificationCreateTag,
 		model.ToSQLVerification(verification),
 	)
-	updateBuilder.Where(updateBuilder.Equal("uuid", verification.Uuid().Value()))
+	updateBuilder.Where(updateBuilder.Equal("uuid", verification.UUID().Value()))
 
 	query, args := updateBuilder.BuildWithFlavor(sqlbuilder.PostgreSQL)
 
@@ -75,11 +75,11 @@ func (r *VerificationRepository) Update(ctx context.Context, verification *aggre
 	return nil
 }
 
-// GetByUuid implements the aggregate.VerificationRepository.GetByUuid() method.
-func (r *VerificationRepository) GetByUuid(ctx context.Context, uuid aggregate.VerificationUuid) (*aggregate.Verification, error) {
-	verificationSQLStruct := sqlbuilder.NewStruct(new(model.SqlVerification))
+// GetByUUID implements the aggregate.VerificationRepository.GetByUUID() method.
+func (r *VerificationRepository) GetByUUID(ctx context.Context, uuid aggregate.VerificationUUID) (*aggregate.Verification, error) {
+	verificationSQLStruct := sqlbuilder.NewStruct(new(model.SQLVerification))
 
-	selectBuilder := verificationSQLStruct.SelectFromForTag(model.SqlVerificationTable, model.SqlVerificationGetTag)
+	selectBuilder := verificationSQLStruct.SelectFromForTag(model.SQLVerificationTable, model.SQLVerificationGetTag)
 	selectBuilder.Where(selectBuilder.Equal("uuid", uuid.Value()))
 
 	query, args := selectBuilder.BuildWithFlavor(sqlbuilder.PostgreSQL)
@@ -87,9 +87,9 @@ func (r *VerificationRepository) GetByUuid(ctx context.Context, uuid aggregate.V
 	ctxTimeout, cancel := context.WithTimeout(ctx, r.dbTimeout)
 	defer cancel()
 
-	var sqlVerification model.SqlVerification
+	var SQLVerification model.SQLVerification
 
-	err := r.db.QueryRowContext(ctxTimeout, query, args...).Scan(verificationSQLStruct.Addr(&sqlVerification)...)
+	err := r.db.QueryRowContext(ctxTimeout, query, args...).Scan(verificationSQLStruct.Addr(&SQLVerification)...)
 
 	if err != nil {
 		switch {
@@ -100,5 +100,5 @@ func (r *VerificationRepository) GetByUuid(ctx context.Context, uuid aggregate.V
 		}
 	}
 
-	return model.ToDomainVerification(sqlVerification)
+	return model.ToDomainVerification(SQLVerification)
 }

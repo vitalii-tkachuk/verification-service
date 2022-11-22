@@ -9,18 +9,18 @@ import (
 )
 
 const (
-	SqlVerificationTable     = "verifications"
-	SqlVerificationCreateTag = "create"
-	SqlVerificationGetTag    = "get"
+	SQLVerificationTable     = "verifications"
+	SQLVerificationCreateTag = "create"
+	SQLVerificationGetTag    = "get"
 )
 
 var ErrFailedRestoringVerificationFromDatabase = errors.New("failed restoring verification from database")
 
-// SqlVerification verification represents aggregate.Verification database structure.
+// SQLVerification verification represents aggregate.Verification database structure.
 // separate struct is used because aggregate with VO is hard to persist to database
-type SqlVerification struct {
-	Id            uint32    `db:"id" fieldtag:"get"`
-	Uuid          string    `db:"uuid" fieldtag:"create,get"`
+type SQLVerification struct {
+	ID            uint32    `db:"id" fieldtag:"get"`
+	UUID          string    `db:"uuid" fieldtag:"create,get"`
 	Kind          string    `db:"kind" fieldtag:"create,get"`
 	Description   string    `db:"description" fieldtag:"create,get"`
 	Status        string    `db:"status" fieldtag:"create,get"`
@@ -29,9 +29,9 @@ type SqlVerification struct {
 }
 
 // ToSQLVerification convert aggregate.Verification to it's sql representation.
-func ToSQLVerification(verification *aggregate.Verification) SqlVerification {
-	sqlVerification := SqlVerification{
-		Uuid:        verification.Uuid().Value(),
+func ToSQLVerification(verification *aggregate.Verification) SQLVerification {
+	sqlVerification := SQLVerification{
+		UUID:        verification.UUID().Value(),
 		Kind:        verification.Kind().Value(),
 		Description: verification.Description().Value(),
 		Status:      verification.Status().Value(),
@@ -46,9 +46,9 @@ func ToSQLVerification(verification *aggregate.Verification) SqlVerification {
 }
 
 // ToDomainVerification convert SqlVerification to domain aggregate.
-func ToDomainVerification(sqlVerification SqlVerification) (*aggregate.Verification, error) {
+func ToDomainVerification(sqlVerification SQLVerification) (*aggregate.Verification, error) {
 	verification, err := aggregate.NewVerification(
-		sqlVerification.Uuid,
+		sqlVerification.UUID,
 		sqlVerification.Kind,
 		sqlVerification.Description,
 	)
@@ -57,7 +57,7 @@ func ToDomainVerification(sqlVerification SqlVerification) (*aggregate.Verificat
 		return nil, fmt.Errorf("%s: %w", ErrFailedRestoringVerificationFromDatabase, err)
 	}
 
-	verification.WithId(sqlVerification.Id)
+	verification.WithID(sqlVerification.ID)
 
 	if err = verification.WithStatus(sqlVerification.Status); err != nil {
 		return nil, err

@@ -40,8 +40,8 @@ func NewApplication(commandBus bus.CommandBus, queryBus bus.QueryBus, validator 
 	}
 }
 
-// GetUrlParam returns chi.Router url param
-func (a *Application) GetUrlParam(r *http.Request, name string) string {
+// GetURLParam returns chi.Router url param.
+func (a *Application) GetURLParam(r *http.Request, name string) string {
 	return chi.URLParam(r, name)
 }
 

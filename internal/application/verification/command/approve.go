@@ -16,9 +16,9 @@ type ApproveVerificationCommand struct {
 }
 
 // NewApproveVerificationCommand creates a new ApproveVerificationCommand.
-func NewApproveVerificationCommand(uuid string) ApproveVerificationCommand {
+func NewApproveVerificationCommand(UUID string) ApproveVerificationCommand {
 	return ApproveVerificationCommand{
-		uuid: uuid,
+		uuid: UUID,
 	}
 }
 

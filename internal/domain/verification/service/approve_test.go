@@ -12,30 +12,30 @@ import (
 	"github.com/vitalii-tkachuk/verification-service/test/mocks/persistence"
 )
 
-func TestApproveVerificationServiceInvalidUuidError(t *testing.T) {
+func TestApproveVerificationServiceInvalidUUIDError(t *testing.T) {
 	// assign
-	verificationUuid := "invalidUuid"
+	verificationUUID := "invalidUUID"
 
 	// act
 	verificationRepositoryMock := new(persistence.VerificationRepository)
 	approveVerificationService := NewApproveVerificationService(verificationRepositoryMock)
-	err := approveVerificationService.Approve(context.Background(), verificationUuid)
+	err := approveVerificationService.Approve(context.Background(), verificationUUID)
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)
-	assert.ErrorIs(t, err, aggregate.ErrInvalidVerificationUuid)
+	assert.ErrorIs(t, err, aggregate.ErrInvalidVerificationUUID)
 }
 
 func TestApproveVerificationServiceNotFoundError(t *testing.T) {
 	// assign
-	verificationUuid := uuid.New()
+	verificationUUID := uuid.New()
 
 	verificationRepositoryMock := new(persistence.VerificationRepository)
-	verificationRepositoryMock.On("GetByUuid", mock.Anything, mock.Anything).Return(nil, postgres.ErrVerificationNotFound)
+	verificationRepositoryMock.On("GetByUUID", mock.Anything, mock.Anything).Return(nil, postgres.ErrVerificationNotFound)
 
 	// act
 	approveVerificationService := NewApproveVerificationService(verificationRepositoryMock)
-	err := approveVerificationService.Approve(context.Background(), verificationUuid.String())
+	err := approveVerificationService.Approve(context.Background(), verificationUUID.String())
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)
@@ -52,11 +52,11 @@ func TestApproveVerificationServiceAlreadyProcessedError(t *testing.T) {
 	_ = processedVerification.Approve()
 
 	verificationRepositoryMock := new(persistence.VerificationRepository)
-	verificationRepositoryMock.On("GetByUuid", mock.Anything, mock.Anything).Return(processedVerification, nil)
+	verificationRepositoryMock.On("GetByUUID", mock.Anything, mock.Anything).Return(processedVerification, nil)
 
 	// act
 	approveVerificationService := NewApproveVerificationService(verificationRepositoryMock)
-	err := approveVerificationService.Approve(context.Background(), processedVerification.Uuid().Value())
+	err := approveVerificationService.Approve(context.Background(), processedVerification.UUID().Value())
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)
@@ -72,12 +72,12 @@ func TestApproveVerificationServiceSuccess(t *testing.T) {
 	)
 
 	verificationRepositoryMock := new(persistence.VerificationRepository)
-	verificationRepositoryMock.On("GetByUuid", mock.Anything, mock.Anything).Return(verification, nil)
+	verificationRepositoryMock.On("GetByUUID", mock.Anything, mock.Anything).Return(verification, nil)
 	verificationRepositoryMock.On("Update", mock.Anything, mock.Anything).Return(nil)
 
 	// act
 	approveVerificationService := NewApproveVerificationService(verificationRepositoryMock)
-	err := approveVerificationService.Approve(context.Background(), verification.Uuid().Value())
+	err := approveVerificationService.Approve(context.Background(), verification.UUID().Value())
 
 	// assert
 	verificationRepositoryMock.AssertExpectations(t)
