@@ -1,7 +1,6 @@
 package verification
 
 import (
-	"context"
 	"net/http"
 	"time"
 
@@ -41,7 +40,7 @@ func GetVerificationHandler(application *infrastructure.Application) func(http.R
 
 		getVerificationByUUIDQuery := query.NewGetVerificationByUUIDQuery(verificationUUID)
 
-		verification, err := application.QueryBus.Ask(context.Background(), getVerificationByUUIDQuery)
+		verification, err := application.QueryBus.Ask(r.Context(), getVerificationByUUIDQuery)
 		if err != nil {
 			application.HttpErrorResponse(w, err)
 

@@ -1,7 +1,6 @@
 package verification
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -40,7 +39,7 @@ func CreateVerificationHandler(application *infrastructure.Application) func(htt
 		verificationUUID := uuid.New()
 		createCommand := command.NewCreateVerificationCommand(verificationUUID, request.Description, request.Kind)
 
-		if err := application.CommandBus.Dispatch(context.Background(), createCommand); err != nil {
+		if err := application.CommandBus.Dispatch(r.Context(), createCommand); err != nil {
 			application.HttpErrorResponse(w, err)
 
 			return

@@ -1,7 +1,6 @@
 package verification
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/vitalii-tkachuk/verification-service/internal/application/verification/command"
@@ -38,7 +37,7 @@ func DeclineVerificationHandler(application *infrastructure.Application) func(ht
 		verificationUUID := application.GetURLParam(r, "verificationUuid")
 		declineCommand := command.NewDeclineVerificationCommand(verificationUUID, request.DeclineReason)
 
-		if err := application.CommandBus.Dispatch(context.Background(), declineCommand); err != nil {
+		if err := application.CommandBus.Dispatch(r.Context(), declineCommand); err != nil {
 			application.HttpErrorResponse(w, err)
 
 			return

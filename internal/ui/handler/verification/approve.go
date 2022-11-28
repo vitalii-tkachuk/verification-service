@@ -1,7 +1,6 @@
 package verification
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/vitalii-tkachuk/verification-service/internal/application/verification/command"
@@ -20,7 +19,7 @@ func ApproveVerificationHandler(application *infrastructure.Application) func(ht
 
 		approveCommand := command.NewApproveVerificationCommand(verificationUUID)
 
-		if err := application.CommandBus.Dispatch(context.Background(), approveCommand); err != nil {
+		if err := application.CommandBus.Dispatch(r.Context(), approveCommand); err != nil {
 			application.HttpErrorResponse(w, err)
 
 			return
