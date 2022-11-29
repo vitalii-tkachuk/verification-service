@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "verification-service.fullname" . }}-postgres-migrate-job
+  labels:
+    {{- include "verification-service.labelsPostgres" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install, post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  template:
+    metadata:
+      labels:
+       {{- include "verification-service.labelsPostgres" . | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: init-data-migration
+          image: busybox
+          command: ["/bin/sh", "-c", "until nc -w 2 verification-service-postgres 5432; do sleep 1; done;"]
+      containers:
+        - name: migrate
+          image: {{ .Values.migrate.skaffoldImageKey }}
+          imagePullPolicy: {{ .Values.migrate.imagePullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "verification-service.fullname" . }}-config

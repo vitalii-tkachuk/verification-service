@@ -23,6 +23,10 @@ postgres:
   password: password
   port: 5432
 
+migrate:
+  skaffoldImageKey: verification-service-postgres-migrate:latest
+  imagePullPolicy: IfNotPresent
+
 service:
   type: "ClusterIP"
   port: 80

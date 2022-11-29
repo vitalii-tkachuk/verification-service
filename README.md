@@ -2,10 +2,10 @@
 
 1. [Install required development software](.github/PREREQUISITES.md)
 2. Start local minikube cluster `make start`
-2. Add minikube ip to /etc/hosts (you will need administrator access) `make hosts`
-3. Run `make skaffold`
-4. Verification service will be available on http://verification-service.local
-4. [Check make interact commands](.github/MAKE.md)
+3. Add minikube ip to /etc/hosts (you will need administrator access) `make hosts`
+4. Run `make skaffold`
+5. Verification service will be available on http://verification-service.local
+6. [Check make interact commands](.github/MAKE.md)
 
 ## Implementations
 

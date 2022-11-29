@@ -11,7 +11,14 @@ build:
           - cmd/**/*
           - internal/**/*
       docker:
-        dockerfile: build/Dockerfile
+        dockerfile: build/api/Dockerfile
+    - image: verification-service-postgres-migrate
+      context: .
+      sync:
+        infer:
+          - migrations/*
+      docker:
+        dockerfile: build/migrate/Dockerfile
   tagPolicy:
     sha256: {}
 deploy:
