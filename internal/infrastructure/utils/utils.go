@@ -2,8 +2,8 @@ package utils
 
 import "unicode"
 
-// Contains check if slice contain specific element. Could be improved with generics for other types.
-func Contains(needle string, haystack []string) bool {
+// Contains check if slice contain specific element.
+func Contains[T comparable](needle T, haystack []T) bool {
 	for _, v := range haystack {
 		if v == needle {
 			return true

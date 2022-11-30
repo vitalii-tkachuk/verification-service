@@ -12,7 +12,7 @@ var (
 
 // QueryBus defines interface for CQRS query bus implementations.
 type QueryBus interface {
-	Ask(context.Context, Query) (interface{}, error)
+	Ask(context.Context, Query) (any, error)
 	Register(QueryType, QueryHandler)
 }
 
@@ -28,5 +28,5 @@ type Query interface {
 
 // QueryHandler defined interface for query handler. Handler match command by command type.
 type QueryHandler interface {
-	Handle(context.Context, Query) (interface{}, error)
+	Handle(context.Context, Query) (any, error)
 }

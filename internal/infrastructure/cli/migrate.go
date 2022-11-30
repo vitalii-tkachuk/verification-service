@@ -21,6 +21,7 @@ var (
 const migrationsSourceURL = "file://migrations"
 const migrationsDriverName = "postgres"
 
+// RunMigrate open database connection and execute new migrations.
 func RunMigrate() error {
 	con, err := getConnection()
 	if err != nil {
@@ -42,6 +43,7 @@ func RunMigrate() error {
 	return nil
 }
 
+// getConnection parse environment config and open database connection.
 func getConnection() (*sql.DB, error) {
 	var cfg config.Config
 
@@ -57,6 +59,7 @@ func getConnection() (*sql.DB, error) {
 	return db, nil
 }
 
+// migrateUp execute new migrations.
 func migrateUp(connection *sql.DB) error {
 	driver, err := postgres.WithInstance(connection, &postgres.Config{})
 	if err != nil {

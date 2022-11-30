@@ -20,7 +20,7 @@ func NewQueryBus() *QueryBus {
 }
 
 // Ask implements bus.CommandBus.Ask method.
-func (b QueryBus) Ask(ctx context.Context, query bus.Query) (interface{}, error) {
+func (b QueryBus) Ask(ctx context.Context, query bus.Query) (any, error) {
 	handler, ok := b.handlers[query.Type()]
 	if !ok {
 		return nil, fmt.Errorf("query type %s: %w", query.Type(), bus.ErrQueryHandlerNotFound)

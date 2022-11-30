@@ -46,7 +46,7 @@ func (a *Application) GetURLParam(r *http.Request, name string) string {
 }
 
 // Marshall serializes response data to json with specific status code.
-func (a *Application) Marshall(w http.ResponseWriter, status int, data interface{}, headers http.Header) error {
+func (a *Application) Marshall(w http.ResponseWriter, status int, data any, headers http.Header) error {
 	content, err := json.Marshal(data)
 	if err != nil {
 		return fmt.Errorf("marshalling response data of type %s failed: %v", reflect.TypeOf(data), err)
@@ -67,7 +67,7 @@ func (a *Application) Marshall(w http.ResponseWriter, status int, data interface
 }
 
 // Unmarshall deserialize request data to destination struct.
-func (a *Application) Unmarshall(w http.ResponseWriter, r *http.Request, destination interface{}) error {
+func (a *Application) Unmarshall(w http.ResponseWriter, r *http.Request, destination any) error {
 	r.Body = http.MaxBytesReader(w, r.Body, requestMaxBodySizeInBytes)
 	dec := json.NewDecoder(r.Body)
 

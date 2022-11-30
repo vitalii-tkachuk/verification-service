@@ -40,7 +40,7 @@ func NewGetVerificationByUUIDQueryHandler(verificationRepository aggregate.Verif
 }
 
 // Handle implements the bus.QueryHandler interface.
-func (h GetVerificationByUUIDQueryHandler) Handle(ctx context.Context, q bus.Query) (interface{}, error) {
+func (h GetVerificationByUUIDQueryHandler) Handle(ctx context.Context, q bus.Query) (any, error) {
 	getVerificationCommand, ok := q.(GetVerificationByUUIDQuery)
 	if !ok {
 		return nil, fmt.Errorf("query type %s: %w", q.Type(), bus.ErrUnexpectedQuery)
